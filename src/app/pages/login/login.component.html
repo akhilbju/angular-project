@@ -1,21 +1,47 @@
 <div class="login-container">
-  <h2>Login</h2>
+  <div class="login-card">
 
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <h2>Login</h2>
 
-    <div>
-      <label>Email</label>
-      <input type="email" formControlName="email" />
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" formControlName="email" />
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" formControlName="password" />
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid">
+        Login
+      </button>
+    </form>
+
+    <!-- Signup + Forgot Password -->
+    <div class="links">
+      <a routerLink="/signup">Create account</a>
+      <a routerLink="/forgot-password">Forgot password?</a>
     </div>
 
-    <div>
-      <label>Password</label>
-      <input type="password" formControlName="password" />
+    <div class="divider">
+      <span>OR</span>
     </div>
 
-    <button type="submit" [disabled]="loginForm.invalid">
-      Login
-    </button>
+    <!-- Social Login Buttons -->
+    <div class="social-login">
+      <button class="google-btn" (click)="loginWithGoogle()">
+        <img src="../../../assets/google.png" alt="google" />
+        Continue with Google
+      </button>
 
-  </form>
+      <button class="facebook-btn" (click)="loginWithFacebook()">
+        <img src="../../../assets/facebook.png" alt="facebook" />
+        Continue with Facebook
+      </button>
+    </div>
+
+  </div>
 </div>

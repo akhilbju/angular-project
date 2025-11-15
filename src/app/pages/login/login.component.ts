@@ -22,4 +22,13 @@ export class LoginComponent {
   onSubmit() {
     console.log(this.loginForm.value);
   }
+
+  loginWithGoogle() {
+  console.log("Google login clicked");
+}
+
+loginWithFacebook() {
+  console.log("Facebook login clicked");
+}
+
 }
