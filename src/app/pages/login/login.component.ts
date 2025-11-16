@@ -7,6 +7,8 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../../src/app/services/api.services';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,9 @@ import { ApiService } from '../../../../src/app/services/api.services';
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private apiService: ApiService) {
+  constructor(private fb: FormBuilder,
+  private apiService: ApiService,
+  private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -30,10 +34,15 @@ export class LoginComponent {
       email: this.loginForm.value.email,
       password: this.loginForm.value.password,
     };
-
     this.apiService.login(data).subscribe(
       (response) => {
-        console.log('Login successful', response);
+        if(response.isSuccess === true){
+          {
+            localStorage.setItem('token', response.token);
+            alert('Login Successful!');
+            this.router.navigate(['/home']);
+          }
+        };
       }
     );
   }

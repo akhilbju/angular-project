@@ -18,7 +18,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Copy built Angular files to nginx html folder
-COPY --from=build /app/dist/video-stream/ /usr/share/nginx/html/
+COPY --from=build /app/dist/video-stream/browser/ /usr/share/nginx/html/
 
 # Copy custom nginx config (optional)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
