@@ -39,11 +39,11 @@ export class LoginComponent {
     };
     this.apiService.login(data).subscribe((response) => {
       if (response.isSuccess === true) {
-        {
-          localStorage.setItem('token', response.token);
-          this.toast.show('Login Successful!','success');
-          this.router.navigate(['/home']);
-        }
+        localStorage.setItem('token', response.token);
+        this.toast.show('Login Successful!', 'success');
+        this.router.navigate(['/home']);
+      }else{
+        this.toast.show(response.errorMessage, 'error');
       }
     });
   }
