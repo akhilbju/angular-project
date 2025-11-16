@@ -49,7 +49,11 @@ export class LoginComponent {
   }
 
   loginWithGoogle() {
-    console.log('Google login clicked');
+    this.apiService.getUrlLink().subscribe((response) => {
+      console.log(response);
+      window.location.href = response.successMessage;
+      console.log(response);
+    })
   }
 
   loginWithFacebook() {
