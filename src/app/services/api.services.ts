@@ -22,4 +22,12 @@ export class ApiService {
       `${this.authBaseUrl}/api/Auth/GetGoogleLink`,
     );
   }
+
+  getRecommendedMovies(): Observable<any> {
+    return this.http.get('http://localhost:5112/api/Home/GetRecommendedMovies');
+  }
+
+  streamVideo(movieId: string): Observable<Blob> {
+    return this.http.get(`http://localhost:5112/api/Home/StreamVideo?movieId=${movieId}`, { responseType: 'blob' });
+  }
 }

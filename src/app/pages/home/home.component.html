@@ -1,1 +1,25 @@
-<p>home works!</p>
+<div class="home">
+    <div class="video-grid">
+        <div class="video-card" *ngFor="let video of videos" (click)="playVideo(video)">
+            <!-- Using a placeholder or the link if it happens to be an image, though API says link is mp4. 
+                 For now, using a generic placeholder if no thumbnail field exists. -->
+            <img src="https://via.placeholder.com/300x169.png?text=Video+Thumbnail" [alt]="video.name"
+                class="thumbnail">
+            <div class="info">
+                <h3>{{ video.name }}</h3>
+                <p class="genre">{{ video.genre }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-player-overlay" *ngIf="currentVideo && currentStreamUrl">
+        <div class="player-container">
+            <button class="close-btn" (click)="closePlayer()">X</button>
+            <video [src]="currentStreamUrl" controls autoplay></video>
+            <div class="video-details">
+                <h2>{{ currentVideo.name }}</h2>
+                <p>{{ currentVideo.description }}</p>
+            </div>
+        </div>
+    </div>
+</div>
