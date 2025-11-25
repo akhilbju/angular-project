@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private authBaseUrl = 'http://localhost:5055';
+  private authBaseUrl = 'http://localhost:30055';
+  private homeBaseUrl = 'http://localhost:30056';
+
 
   constructor(private http: HttpClient) {}
 
@@ -24,10 +26,10 @@ export class ApiService {
   }
 
   getRecommendedMovies(): Observable<any> {
-    return this.http.get('http://localhost:5112/api/Home/GetRecommendedMovies');
+    return this.http.get(`${this.homeBaseUrl}/api/Home/GetRecommendedMovies`);
   }
 
   streamVideo(movieId: string): Observable<Blob> {
-    return this.http.get(`http://localhost:5112/api/Home/StreamVideo?movieId=${movieId}`, { responseType: 'blob' });
+    return this.http.get(`${this.homeBaseUrl}/api/Home/StreamVideo?movieId=${movieId}`, { responseType: 'blob' });
   }
 }

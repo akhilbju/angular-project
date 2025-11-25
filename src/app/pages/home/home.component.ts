@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api.services';
+import { PaymentService } from '../../services/payment.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 interface Video {
@@ -26,7 +27,7 @@ export class HomeComponent implements OnInit {
   videoObjectUrl: string | null = null;
   videos: Video[] = [];
 
-  constructor(private apiService: ApiService, private sanitizer: DomSanitizer) {}
+  constructor(private apiService: ApiService, private sanitizer: DomSanitizer, private paymentService: PaymentService) {}
 
   ngOnInit() {
     this.apiService.getRecommendedMovies().subscribe({
@@ -48,9 +49,47 @@ export class HomeComponent implements OnInit {
         this.currentStreamUrl = this.sanitizer.bypassSecurityTrustUrl(objectUrl);
       },
       error: (err) => {
-        console.error('Failed to stream video', err);
+        if (err.status === 402) {
+          this.handlePayment(video);
+        } else {
+          console.error('Failed to stream video', err);
+        }
       }
     });
+  }
+
+  handlePayment(video: Video) {
+    const options = {
+      key: 'rzp_test_1DP5mmOlF5G5ag', // Replace with your actual Razorpay Key ID
+      amount: video.price * 100, // Amount in paise
+      currency: 'INR',
+      name: 'Video Stream',
+      description: `Payment for ${video.name}`,
+      image: 'https://angular.io/assets/images/logos/angular/angular.png',
+      handler: (response: any) => {
+        console.log('Payment successful', response);
+        // Retry playing the video after successful payment
+        // In a real app, you might verify the payment with the backend here
+        this.playVideo(video);
+      },
+      prefill: {
+        name: 'Sandeep',
+        email: 'sandeep@example.com',
+        contact: '9999999999'
+      },
+      theme: {
+        color: '#3399cc'
+      }
+    };
+
+    this.paymentService.openPayment(options).then(
+      (response: any) => {
+        console.log('Payment flow completed', response);
+      },
+      (error: any) => {
+        console.error('Payment failed or cancelled', error);
+      }
+    );
   }
 
   closePlayer() {
